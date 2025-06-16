@@ -3,7 +3,7 @@ import pandas as pd
 import gdown
 
 st.set_page_config("Relatório de Ponto", layout="wide")
-st.title("📊 Dashboard de Ponto - Google Drive")
+st.title("📊 Dashboard de Ponto")
 
 # Baixar arquivo do Google Drive
 file_id = "1HnJtt5c-7qdhzVTe5vo_a8o05exI5ETF"
