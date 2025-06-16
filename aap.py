@@ -54,16 +54,24 @@ col1, col2 = st.columns(2)
 col1.metric("👟 Funcionários Fora da Jornada", fora_df['Funcionario'].nunique())
 col2.metric("⏱️ Funcionários com Hora Extra", extra_df['Funcionario'].nunique())
 
-# 📥 Botões de download
+# 📥 Botões de download protegidos
 def gerar_excel(df):
     output = BytesIO()
     df.to_excel(output, index=False)
     return output.getvalue()
 
+# 🔍 Fora da Jornada
 with st.expander("🔍 Detalhe: Fora da Jornada"):
-    st.dataframe(fora_df[['Funcionario', 'Data', 'Ponto Inicial', 'Ponto Final', 'JORNADA.ENTRADA', 'JORNADA.SAIDA']])
-    st.download_button("📥 Baixar Fora da Jornada", gerar_excel(fora_df), file_name="fora_da_jornada.xlsx")
+    if not fora_df.empty:
+        st.dataframe(fora_df[['Funcionario', 'Data', 'Ponto Inicial', 'Ponto Final', 'JORNADA.ENTRADA', 'JORNADA.SAIDA']])
+        st.download_button("📥 Baixar Fora da Jornada", gerar_excel(fora_df), file_name="fora_da_jornada.xlsx")
+    else:
+        st.info("Nenhum registro fora da jornada encontrado.")
 
+# 🔍 Hora Extra
 with st.expander("🔍 Detalhe: Hora Extra"):
-    st.dataframe(extra_df[['Funcionario', 'Data', 'Ponto Final', 'JORNADA.SAIDA']])
-    st.download_button("📥 Baixar Hora Extra", gerar_excel(extra_df), file_name="hora_extra.xlsx")
+    if not extra_df.empty:
+        st.dataframe(extra_df[['Funcionario', 'Data', 'Ponto Final', 'JORNADA.SAIDA']])
+        st.download_button("📥 Baixar Hora Extra", gerar_excel(extra_df), file_name="hora_extra.xlsx")
+    else:
+        st.info("Nenhum registro de hora extra encontrado.")
